@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Важно для мобильного вида -->
+    <meta name="theme-color" content="#333333"> <!-- Цвет статус-бара -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <title>Ретушь Медальонов</title>
+
+    <!-- Подключаем manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Иконки (замени на свои) -->
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/192?text=Logo" sizes="192x192">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/180?text=Logo">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header { background: #333; color: white; padding: 20px; text-align: center; }
+        .hero {
+            background: #444 url('https://via.placeholder.com/1920x600?text=Медальон') center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            text-shadow: 1px 1px 3px black;
+        }
+        .content { max-width: 900px; margin: 30px auto; padding: 0 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .cta { text-align: center; padding: 40px 0; }
+        .cta button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        footer { background: #333; color: white; text-align: center; padding: 12px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Ретушь Медальонов на Памятники</h1>
+    </header>
+
+    <section class="hero">
+        <div>
+            <h2>Идеальные фото для вечной памяти</h2>
+            <p>Профессиональная ретушь быстро и качественно</p>
+        </div>
+    </section>
+
+    <section class="content">
+        <h3>Скоро здесь будет загрузка фото и ИИ-обработка</h3>
+        <p>Пока тестируем обложку в формате PWA — добавь на главный экран телефона!</p>
+    </section>
+
+    <section class="cta">
+        <button onclick="alert('Загрузка фото — в разработке')">Начать ретушь</button>
+    </section>
+
+    <footer>© 2026 Ретушь Медальонов</footer>
+
+    <!-- Регистрация Service Worker (минимальный для установки PWA) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker зарегистрирован', reg))
+                    .catch(err => console.log('Ошибка SW:', err));
+            });
+        }
+
+        // Показываем кнопку установки (опционально, браузер сам предложит)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Можно показать свою кнопку "Установить приложение"
+        });
+    </script>
+</body>
+</html>
