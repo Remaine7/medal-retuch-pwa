@@ -1,97 +1,158 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Важно для мобильного вида -->
-    <meta name="theme-color" content="#333333"> <!-- Цвет статус-бара -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="mobile-web-app-capable" content="yes">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ретушь Медальонов — Вечная Память</title>
+  
+  <!-- PWA essentials (оставляем как было) -->
+  <meta name="theme-color" content="#4f46e5"/>
+  <meta name="description" content="Профессиональная ретушь фотографий для медальонов на памятники. Быстро, качественно, с уважением."/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="icon" href="/icon-192.png" sizes="192x192"/>
+  <link rel="apple-touch-icon" href="/icon-192.png"/>
 
-    <title>Ретушь Медальонов</title>
-
-    <!-- Подключаем manifest -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- Иконки (замени на свои) -->
-    <link rel="icon" type="image/png" href="https://via.placeholder.com/192?text=Logo" sizes="192x192">
-    <link rel="apple-touch-icon" href="https://via.placeholder.com/180?text=Logo">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+  <!-- Tailwind CSS CDN (самый простой способ для красивого дизайна) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4f46e5',     // мягкий индиго
+            accent: '#6b7280',      // тёплый серый
+            bgsoft: '#f8fafc',
+          }
         }
-        header { background: #333; color: white; padding: 20px; text-align: center; }
-        .hero {
-            background: #444 url('https://via.placeholder.com/1920x600?text=Медальон') center/cover;
-            height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            text-shadow: 1px 1px 3px black;
-        }
-        .content { max-width: 900px; margin: 30px auto; padding: 0 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .cta { text-align: center; padding: 40px 0; }
-        .cta button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            font-size: 20px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        footer { background: #333; color: white; text-align: center; padding: 12px; }
-    </style>
+      }
+    }
+  </script>
+
+  <style>
+    /* Дополнительные стили для плавности */
+    img { max-width: 100%; height: auto; }
+    .preview-container { max-height: 400px; overflow: hidden; border-radius: 12px; }
+  </style>
 </head>
-<body>
+<body class="bg-gradient-to-b from-bgsoft to-white min-h-screen font-sans antialiased">
 
-    <header>
-        <h1>Ретушь Медальонов на Памятники</h1>
-    </header>
+  <!-- Header / Navbar -->
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-semibold text-gray-800">Ретушь Медальонов</h1>
+      <nav class="space-x-6 text-gray-600">
+        <a href="#" class="hover:text-primary transition">Главная</a>
+        <a href="#" class="hover:text-primary transition">Примеры</a>
+        <a href="#" class="hover:text-primary transition">Контакты</a>
+      </nav>
+    </div>
+  </header>
 
-    <section class="hero">
-        <div>
-            <h2>Идеальные фото для вечной памяти</h2>
-            <p>Профессиональная ретушь быстро и качественно</p>
-        </div>
-    </section>
+  <!-- Hero -->
+  <section class="py-16 md:py-24 text-center px-4">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+        Сохраните лучшие черты навсегда
+      </h2>
+      <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+        Профессиональная ретушь фотографий специально для медальонов на памятники. Уважительное отношение, высокое качество, быстрая обработка.
+      </p>
 
-    <section class="content">
-        <h3>Скоро здесь будет загрузка фото и ИИ-обработка</h3>
-        <p>Пока тестируем обложку в формате PWA — добавь на главный экран телефона!</p>
-    </section>
+      <!-- Кнопка призыва -->
+      <label for="photo-upload" class="inline-block bg-primary text-white px-10 py-5 rounded-xl text-lg font-medium shadow-lg hover:bg-indigo-700 transition cursor-pointer">
+        Загрузить фото
+      </label>
+      <input type="file" id="photo-upload" accept="image/*" class="hidden"/>
+    </div>
+  </section>
 
-    <section class="cta">
-        <button onclick="alert('Загрузка фото — в разработке')">Начать ретушь</button>
-    </section>
+  <!-- Секция предпросмотра и кнопок (появляется после загрузки) -->
+  <section id="preview-section" class="hidden max-w-4xl mx-auto px-4 pb-20">
+    <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10">
+      <h3 class="text-2xl font-semibold text-center mb-8">Ваше фото готово к ретуши</h3>
+      
+      <div class="preview-container mx-auto mb-10 border border-gray-200">
+        <img id="preview-img" alt="Предпросмотр загруженного фото" class="w-full object-contain"/>
+      </div>
 
-    <footer>© 2026 Ретушь Медальонов</footer>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button id="retouch-btn" class="bg-primary text-white px-12 py-5 rounded-xl text-lg font-medium hover:bg-indigo-700 transition shadow-md">
+          Начать ретушь
+        </button>
+        <button id="reset-btn" class="bg-gray-200 text-gray-800 px-12 py-5 rounded-xl text-lg font-medium hover:bg-gray-300 transition">
+          Загрузить другое
+        </button>
+      </div>
 
-    <!-- Регистрация Service Worker (минимальный для установки PWA) -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker зарегистрирован', reg))
-                    .catch(err => console.log('Ошибка SW:', err));
-            });
-        }
+      <!-- Имитация процесса (прогресс) -->
+      <div id="progress" class="hidden mt-10 text-center">
+        <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-lg text-gray-600">Выполняется ретушь... Это займёт несколько секунд</p>
+      </div>
 
-        // Показываем кнопку установки (опционально, браузер сам предложит)
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // Можно показать свою кнопку "Установить приложение"
-        });
-    </script>
+      <!-- Результат (заглушка пока) -->
+      <div id="result" class="hidden mt-10 text-center">
+        <p class="text-2xl font-medium text-green-700 mb-4">Готово! Фото отретушировано</p>
+        <p class="text-gray-600 mb-6">Скоро здесь будет сравнение "до / после" и скачивание</p>
+        <button class="bg-green-600 text-white px-10 py-4 rounded-xl hover:bg-green-700 transition">
+          Скачать результат
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-300 py-8 text-center mt-auto">
+    <p>© 2026 Ретушь Медальонов. С заботой о памяти.</p>
+  </footer>
+
+  <!-- JavaScript для интерактива -->
+  <script>
+    const uploadInput = document.getElementById('photo-upload');
+    const previewImg = document.getElementById('preview-img');
+    const previewSection = document.getElementById('preview-section');
+    const retouchBtn = document.getElementById('retouch-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const progress = document.getElementById('progress');
+    const result = document.getElementById('result');
+
+    // Загрузка и предпросмотр фото
+    uploadInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          previewImg.src = ev.target.result;
+          previewSection.classList.remove('hidden');
+          window.scrollTo({ top: previewSection.offsetTop - 80, behavior: 'smooth' });
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Кнопка "Начать ретушь" — имитация
+    retouchBtn.addEventListener('click', () => {
+      progress.classList.remove('hidden');
+      retouchBtn.disabled = true;
+      resetBtn.disabled = true;
+
+      setTimeout(() => {
+        progress.classList.add('hidden');
+        result.classList.remove('hidden');
+        retouchBtn.disabled = false;
+        resetBtn.disabled = false;
+      }, 3500); // 3.5 секунды "обработки"
+    });
+
+    // Сброс
+    resetBtn.addEventListener('click', () => {
+      uploadInput.value = '';
+      previewSection.classList.add('hidden');
+      progress.classList.add('hidden');
+      result.classList.add('hidden');
+      retouchBtn.disabled = false;
+      resetBtn.disabled = false;
+    });
+  </script>
 </body>
 </html>
